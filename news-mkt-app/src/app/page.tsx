@@ -3,12 +3,13 @@
 import { useState, useEffect } from 'react';
 import type { Article } from './api/news/route';
 import MarketTickers from '@/components/MarketTickers';
-import EconomicIndicators from '@/components/EconomicIndicators'; // Import the new component
+import EconomicIndicators from '@/components/EconomicIndicators';
 
 export default function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [command, setCommand] = useState('cat /var/log/news.log');
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -30,48 +31,63 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-        <header className="py-8 border-b border-gray-200 mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 tracking-tight">News Market Hub</h1>
-          <p className="mt-2 text-lg text-gray-600">Real-time updates on emerging markets, commodities, and economic indicators.</p>
+    <main className="bg-black text-green-400 min-h-screen w-full p-2 sm:p-4 font-mono">
+      <div className="border border-green-400 w-full h-full min-h-[calc(100vh-2rem)] flex flex-col">
+        {/* Header Bar */}
+        <div className="bg-green-400 text-black px-2 py-1 flex justify-between items-center">
+          <span>[NEWS-MKT-HUB] - /home/user - zsh</span>
+          <span>[ davidoropezasalazar ]</span>
+        </div>
+
+        {/* Tickers Panel */}
+        <div className="p-2">
           <MarketTickers />
-        </header>
+        </div>
 
-        <section>
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Latest News</h2>
-
-          {loading && <p className="text-center text-gray-500">Loading articles...</p>}
-          {error && <p className="text-center text-red-500">Error: {error}</p>}
-
-          {!loading && !error && (
-            <div className="space-y-6">
-              {articles.map((article) => (
-                <article key={article.id} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-                  <a href={article.url} target="_blank" rel="noopener noreferrer" className="block">
-                    <h2 className="text-2xl font-semibold text-gray-800 hover:text-blue-600">{article.title}</h2>
-                  </a>
-                  <p className="mt-3 text-gray-600">{article.summary}</p>
-                  <footer className="mt-4 flex items-center justify-between">
-                    <p className="text-sm text-gray-500">
-                      Source: <span className="font-medium">{article.source}</span> | Published: {new Date(article.published_at).toLocaleDateString()}
-                    </p>
-                    <div className="flex space-x-2">
-                      {article.tags.map((tag) => (
-                        <span key={tag} className="inline-block bg-gray-200 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </footer>
-                </article>
-              ))}
+        {/* Main Content Area */}
+        <div className="flex-grow p-2 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* News Feed Panel */}
+          <div className="lg:col-span-2 border border-green-400 p-2 overflow-y-auto">
+            <div className="flex items-center">
+              <span className="text-yellow-400">[user@newshub ~]$</span>
+              <span className="text-white ml-2">{command}</span>
+              <span className="cursor"></span>
             </div>
-          )}
-        </section>
+            <div className="mt-2">
+              {loading && <p>Loading news feed...</p>}
+              {error && <p className="text-red-500">Error: {error}</p>}
+              {!loading && !error && (
+                <div className="space-y-2">
+                  {articles.map((article) => (
+                    <div key={article.id} className="border-b border-dashed border-green-800 pb-2">
+                      <p>
+                        <span className="text-cyan-400">{new Date(article.published_at).toISOString()}</span>
+                        <span className="text-yellow-400 mx-2">[{article.source.toUpperCase()}]</span>
+                        <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-white hover:underline">{article.title}</a>
+                      </p>
+                      <p className="text-gray-400 pl-4">{article.summary}</p>
+                      <div className="pl-4 flex space-x-2">
+                        {article.tags.map((tag) => (
+                          <span key={tag} className="text-purple-400">#{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
 
-        <EconomicIndicators />
+          {/* Economic Indicators Panel */}
+          <div className="border border-green-400 p-2">
+            <EconomicIndicators />
+          </div>
+        </div>
 
+        {/* Footer Bar */}
+        <div className="border-t border-green-400 p-1 text-center text-xs">
+          STATUS: OK | 200 OK | Real-time data feeds connected.
+        </div>
       </div>
     </main>
   );

@@ -1,8 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { EconomicIndicator } from '../app/api/economic-indicators/route';
+
+const Table = ({ title, data }: { title: string, data: EconomicIndicator[] }) => (
+  <div>
+    <h3 className="text-yellow-400 mb-1">{title}</h3>
+    <div className="border-t border-b border-green-800 divide-y divide-green-800">
+      {data.map(item => (
+        <div key={item.country} className="flex justify-between p-1">
+          <span className="text-white w-1/3">{item.country}</span>
+          <span className="w-1/3 text-center">{item.value}</span>
+          <span className="w-1/3 text-right text-gray-500">{item.period}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 export default function EconomicIndicators() {
   const [data, setData] = useState<EconomicIndicator[]>([]);
@@ -27,49 +41,20 @@ export default function EconomicIndicators() {
     fetchData();
   }, []);
 
-  const gdpData = data
-    .filter(d => d.indicator.includes('GDP'))
-    .map(d => ({ country: d.country, value: parseFloat(d.value) }));
-
-  const inflationData = data
-    .filter(d => d.indicator.includes('Inflation'))
-    .map(d => ({ country: d.country, value: parseFloat(d.value) }));
+  const gdpData = data.filter(d => d.indicator.includes('GDP'));
+  const inflationData = data.filter(d => d.indicator.includes('Inflation'));
 
   if (loading) {
-    return <div className="py-4 text-sm text-gray-500">Loading economic indicators...</div>;
+    return <p className="text-yellow-400">Loading economic indicators...</p>;
   }
 
   return (
-    <section className="mt-12">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Economic Indicators</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-4">GDP Growth Rate (YoY)</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={gdpData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="country" />
-              <YAxis tickFormatter={(value) => `${value}%`} />
-              <Tooltip formatter={(value) => [`${value}%`, 'GDP Growth']} />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8" name="GDP Growth (%)" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-4">Inflation Rate (YoY)</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={inflationData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="country" />
-              <YAxis tickFormatter={(value) => `${value}%`} />
-              <Tooltip formatter={(value) => [`${value}%`, 'Inflation']} />
-              <Legend />
-              <Bar dataKey="value" fill="#82ca9d" name="Inflation (%)" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+    <div>
+      <h2 className="text-cyan-400 mb-2">[ECONOMIC_INDICATORS]</h2>
+      <div className="space-y-4">
+        <Table title=">> GDP Growth Rate (YoY)" data={gdpData} />
+        <Table title=">> Inflation Rate (YoY)" data={inflationData} />
       </div>
-    </section>
+    </div>
   );
 }
