@@ -37,7 +37,7 @@ export default function MarketTickers() {
   return (
     <div className="border-y border-dashed border-gray-700 py-1 whitespace-nowrap overflow-x-auto">
       <span className="text-gray-400 mr-4">[MARKET_DATA]</span>
-      {data.map((item, index) => (
+      {data.map((item) => (
         <span key={item.name} className="mr-6">
           <span className="text-gray-100">{item.name}:</span>
           <span className="ml-2 font-bold">{item.price}</span>

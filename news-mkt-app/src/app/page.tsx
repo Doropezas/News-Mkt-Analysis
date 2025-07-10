@@ -9,7 +9,7 @@ export default function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [command, setCommand] = useState('cat /var/log/news.log');
+  const [command] = useState('cat /var/log/news.log');
 
   useEffect(() => {
     const fetchArticles = async () => {
