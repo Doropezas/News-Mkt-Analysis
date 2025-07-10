@@ -2,12 +2,12 @@
 
 @theme {
   --color-background: #000000;
-  --color-foreground: #00ff00;
+  --color-foreground: #A0A0A0; /* Grayish color */
 }
 
 body {
   background-color: #000000;
-  color: #00ff00;
+  color: #A0A0A0; /* Grayish color */
   font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
   font-size: 14px;
 }
@@ -23,7 +23,7 @@ body {
   display: inline-block;
   width: 8px;
   height: 16px;
-  background-color: #00ff00;
+  background-color: #A0A0A0; /* Grayish color */
   animation: blink 1s step-end infinite;
   margin-left: 4px;
 }

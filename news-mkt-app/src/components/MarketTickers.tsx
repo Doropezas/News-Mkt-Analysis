@@ -27,7 +27,7 @@ export default function MarketTickers() {
   }, []);
 
   if (loading) {
-    return <div className="text-yellow-400">Loading market data...</div>;
+    return <div className="text-gray-300">Loading market data...</div>;
   }
 
   if (!data.length) {
@@ -35,13 +35,13 @@ export default function MarketTickers() {
   }
 
   return (
-    <div className="border-y border-dashed border-green-800 py-1 whitespace-nowrap overflow-x-auto">
-      <span className="text-cyan-400 mr-4">[MARKET_DATA]</span>
+    <div className="border-y border-dashed border-gray-700 py-1 whitespace-nowrap overflow-x-auto">
+      <span className="text-gray-400 mr-4">[MARKET_DATA]</span>
       {data.map((item, index) => (
         <span key={item.name} className="mr-6">
-          <span className="text-white">{item.name}:</span>
+          <span className="text-gray-100">{item.name}:</span>
           <span className="ml-2 font-bold">{item.price}</span>
-          <span className={`ml-2 ${item.is_up ? 'text-green-500' : 'text-red-500'}`}>
+          <span className={`ml-2 ${item.is_up ? 'text-green-400' : 'text-red-400'}`}>
             ({item.change} / {item.change_percent})
           </span>
         </span>
